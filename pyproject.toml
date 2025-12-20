@@ -1,6 +1,6 @@
 [project]
 name = "tensorprism-comfyui"
-version = "1.1.0"
+version = "1.6.0"
 description = "Advanced model merging and enhancement nodes for ComfyUI with GPU-optimized memory management"
 readme = "README.md"
 authors = [
@@ -42,4 +42,5 @@ include = ["*"]
 exclude = ["tests*", "__pycache__*", "*.pyc"]
 
 [tool.setuptools.package-data]
+
 "*" = ["*.md", "*.txt", "*.json", "*.yaml", "*.yml"]
