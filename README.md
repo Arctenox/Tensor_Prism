@@ -7,7 +7,7 @@ My First ComfyUI Node Pack, sort of vibe-coded with Gemini 2.5 Flash and Claude 
 
 ## Support
 
-If you create interesting models using TensorPrism, feel free to share them with me! Feedback helps improve the node pack.
+If you create interesting models using TensorPrism, feel free to share them with me! Feedback helps improve the node pack and feel free to tell me what needs fixed on here or message me here: https://discord.gg/UVXPdkgedh
 
 # TensorPrism ComfyUI Node Pack
 
@@ -433,3 +433,4 @@ Contributions are welcome! Please feel free to submit issues and pull requests.
 ## Credits
 
 Developed by Arctenox with assistance from Gemini 2.5 Flash and Claude 4.
+
