@@ -1,0 +1,66 @@
+[project]
+name = "comfyui-tensor-prism-node-pack"
+description = "Advanced model merging and enhancement nodes for ComfyUI with sophisticated techniques for blending, enhancing, and manipulating Stable Diffusion models"
+version = "1.6.5"
+license = { text = "GPL-3.0" }
+dependencies = [
+    "torch>=1.12.0",
+    "numpy>=1.21.0",
+    "psutil>=5.8.0"
+]
+
+authors = [
+    { name = "Arctenox" }
+]
+
+readme = "README.md"
+requires-python = ">=3.8"
+
+keywords = [
+    "comfyui",
+    "custom-nodes",
+    "model-merging",
+    "stable-diffusion",
+    "sdxl",
+    "ai",
+    "machine-learning",
+    "deep-learning",
+    "tensor-operations",
+    "spectral-merging"
+]
+
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Multimedia :: Graphics"
+]
+
+[project.urls]
+Repository = "https://github.com/Arctenox/Tensor_Prism"
+Issues = "https://github.com/Arctenox/Tensor_Prism/issues"
+Discord = "https://discord.gg/UVXPdkgedh"
+
+[build-system]
+requires = ["setuptools>=45", "wheel", "setuptools-scm>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["."]
+
+[tool.setuptools.package-data]
+"*" = ["*.py"]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "black>=22.0.0",
+    "flake8>=4.0.0"
+]
