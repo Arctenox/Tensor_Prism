@@ -62,6 +62,6 @@ packages = ["."]
 "*" = ["*.py"]
 
 [tool.comfy]
-publisher_id = "Arctenox"
-display_name = "Tensor Prism"
-icon = "icon.png"
+PublisherID = "Arctenox"
+DisplayName = "Tensor Prism"
+Icon = "icon.png"
