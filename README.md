@@ -108,7 +108,7 @@ Advanced model merging and enhancement nodes for ComfyUI, providing sophisticate
 ### Method 1: Git Clone
 ```bash
 cd ComfyUI/custom_nodes/
-git clone https://github.com/NoxTheCubeman/ComfyUI-Tensor-Prism-Node-Pack.git
+git clone https://github.com/Arctenox/Tensor_Prism
 ```
 
 ### Method 2: ComfyUI Manager
@@ -433,5 +433,6 @@ Contributions are welcome! Please feel free to submit issues and pull requests.
 ## Credits
 
 Developed by Arctenox with assistance from Gemini 2.5 Flash and Claude 4.
+
 
 
