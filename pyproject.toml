@@ -63,6 +63,6 @@ packages = ["."]
 "*" = ["*.py"]
 
 [tool.comfy]
-PublisherId = "Arctenox"
+PublisherId = "arctenox"
 DisplayName = "Tensor Prism"
 Icon = "https://raw.githubusercontent.com/Arctenox/Tensor_Prism/main/icon.png"
