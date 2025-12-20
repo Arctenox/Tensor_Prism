@@ -7,7 +7,7 @@ techniques for blending, enhancing, and manipulating Stable Diffusion models wit
 GPU-optimized memory management.
 
 Author: AstrionX
-Version: 1.2.0
+Version: 1.6.0
 License: GPL-3.0
 Repository: https://github.com/AstrionX/ComfyUI-Tensor-Prism-Node-Pack
 
@@ -101,7 +101,7 @@ except ImportError:
     AdvancedCLIPMerge = None
 
 # Version info
-__version__ = "1.2.0"
+__version__ = "1.6.0"
 __author__ = "AstrionX"
 __description__ = "Advanced model merging and enhancement nodes for ComfyUI"
 
@@ -350,4 +350,5 @@ __all__ = [
     "__version__",
     "__author__",
     "__description__"
+
 ]
