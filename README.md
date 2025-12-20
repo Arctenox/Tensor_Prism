@@ -17,6 +17,20 @@ Advanced model merging and enhancement nodes for ComfyUI, providing sophisticate
 **Version**: 1.6.0  
 **License**: GPL-3.0
 
+## Installation
+
+### Method 1: Git Clone
+```bash
+cd ComfyUI/custom_nodes/
+git clone https://github.com/Arctenox/Tensor_Prism
+```
+
+### Method 2: ComfyUI Manager
+Note: New version not available yet there.
+1. Open ComfyUI Manager
+2. Search for "Tensor Prism"
+3. Click Install
+
 ## Features
 
 ### Core Merging Nodes
@@ -102,25 +116,6 @@ Advanced model merging and enhancement nodes for ComfyUI, providing sophisticate
 
 - **Model Weight Modifier**: Memory-efficient weight modification with operations like multiply, add, set value, clamp magnitude, and scale max absolute value
 - **Model Enhancer**: Advanced model enhancement capabilities
-
-## Installation
-
-### Method 1: Git Clone
-```bash
-cd ComfyUI/custom_nodes/
-git clone https://github.com/Arctenox/Tensor_Prism
-```
-
-### Method 2: ComfyUI Manager
-Note: Not available yet there.
-1. Open ComfyUI Manager
-2. Search for "TensorPrism"
-3. Click Install
-
-### Method 3: Manual Installation (OPTIONAL)
-1. Clone or download this repository
-2. Place the entire folder in your `ComfyUI/custom_nodes/` directory
-3. Restart ComfyUI
 
 ## Usage
 
@@ -433,6 +428,7 @@ Contributions are welcome! Please feel free to submit issues and pull requests.
 ## Credits
 
 Developed by Arctenox with assistance from Gemini 2.5 Flash and Claude 4.
+
 
 
 
