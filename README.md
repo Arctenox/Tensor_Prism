@@ -368,7 +368,7 @@ Contributions are welcome! Please feel free to submit issues and pull requests.
 - **FIXED**: Corrected file upload issues from v1.6.0
 - **VERIFIED**: All node files properly included in repository
 - **CONFIRMED**: Model Analyzer and Model Comparator fully functional
-- All features from v1.6.0 are present and working
+- All features from v1.6.0 should be present
 
 ### Version 1.6.0
 - **NEW**: Model Analyzer node for comprehensive model analysis
