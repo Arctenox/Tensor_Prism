@@ -1,8 +1,10 @@
 [project]
 name = "tensor-prism"
-description = "Advanced model merging and enhancement nodes for ComfyUI with sophisticated techniques for blending, enhancing, and manipulating Stable Diffusion models"
 version = "1.6.5"
+description = "Advanced model merging and enhancement nodes for ComfyUI with sophisticated techniques for blending, enhancing, and manipulating Stable Diffusion models"
 license = { text = "GPL-3.0" }
+readme = "README.md"
+requires-python = ">=3.8"
 dependencies = [
     "torch>=1.12.0",
     "numpy>=1.21.0",
@@ -11,8 +13,6 @@ dependencies = [
 authors = [
     { name = "Arctenox" }
 ]
-readme = "README.md"
-requires-python = ">=3.8"
 keywords = [
     "comfyui",
     "custom-nodes",
@@ -36,7 +36,8 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
-    "Topic :: Multimedia :: Graphics"
+    "Topic :: Multimedia :: Graphics",
+    "Operating System :: OS Independent"
 ]
 
 [project.urls]
@@ -62,6 +63,6 @@ packages = ["."]
 "*" = ["*.py"]
 
 [tool.comfy]
-PublisherID = "Arctenox"
+PublisherId = "Arctenox"
 DisplayName = "Tensor Prism"
-Icon = "icon.png"
+Icon = "https://raw.githubusercontent.com/Arctenox/Tensor_Prism/main/icon.png"
