@@ -1,5 +1,5 @@
 [project]
-name = "Tensor Prism"
+name = "tensor-prism"
 version = "1.7.0"
 description = "Advanced model merging and enhancement nodes for ComfyUI with sophisticated techniques for blending, enhancing, and manipulating Stable Diffusion models"
 license = { text = "GPL-3.0" }
