@@ -1,7 +1,7 @@
-# ComfyUI Tensor Prism Node Pack
+# Tensor Prism - ComfyUI Node Pack
 
 ## Developer Notes
-IMPORTANT: You might have to do a regular ModelMergeSDXL for the block layer merging, since I don't know if it works or not for V1.6.5.
+IMPORTANT: You might have to do a regular ModelMergeSDXL for the block layer merging, since I don't know if it works or not for V1.6.5+.
 
 My First ComfyUI Node Pack, sort of vibe-coded with Gemini 2.5 Flash and Claude 4. Feel free to publish the models you make and link them to me I'd like to be able to see the models, and see what they're about to see if I need to add more nodes or if the nodes are good and make really good quality checkpoint models. This is also a node pack for those familiar with merging models.
 
@@ -18,24 +18,23 @@ Advanced model merging and enhancement nodes for ComfyUI, providing sophisticate
 ### Method 1: Git Clone
 ```bash
 cd ComfyUI/custom_nodes/
-git clone https://github.com/Arctenox/Tensor_Prism.git
+git clone https://github.com/Arctebix/Tensor_Prism.git
 ```
 or
 ```bash
 cd ComfyUI/custom_nodes/
-git clone https://github.com/Arctenox/Tensor_Prism
+https://github.com/Arctebix/Tensor_Prism
 ```
 
 ### Method 2: ComfyUI Manager
-Note: Not available yet there.
 1. Open ComfyUI Manager
 2. Search for "Tensor Prism"
 3. Click Install
 
-### Method 3: Manual Installation
-1. Download the repository
-3. Place the entire folder in your `ComfyUI/custom_nodes/` directory
-4. Restart ComfyUI
+### Method 3: Manual Installation (OPTIONAL)
+1. Download this repository
+2. Place the folder in your `ComfyUI/custom_nodes/` directory
+3. Restart ComfyUI
 
 ## Features
 
@@ -46,6 +45,13 @@ Note: Not available yet there.
 - **Layered Blend**: Component-specific blending with separate controls for text encoder, UNet blocks, and time embeddings
 - **SDXL Block Merge**: Granular control over individual SDXL UNet blocks with support for TIES merging and add difference methods
 - **SDXL Advanced Block Merge**: GPU-optimized block merging with intelligent memory management for any GPU size (including 12GB and smaller cards)
+- **Noise Injection Merge** (NEW in 1.7.0): Controlled noise injection during merging to escape local optima and discover emergent capabilities
+  - **7 Noise Patterns**: Gaussian, Uniform, Structured, Layer-Scaled, Adaptive, Perlin, Gradient
+  - **Minimal Overhead**: No significant memory or performance impact
+  - **Focus Controls**: Target specific layers (attention, MLP) for noise injection
+  - **Layer-Aware Scaling**: Automatic depth-based noise scaling with decay
+  - **Norm Preservation**: Maintains tensor norms for stability
+  - **Reproducible**: Seed-based random generation for consistent results
 
 ### Advanced Tensor Merging
 
@@ -72,7 +78,7 @@ Note: Not available yet there.
   - **Strength Control**: Fine-tune recipe application strength
   - **Block-Level Precision**: Per-block weight application
 
-### Model Analysis Tools
+### Model Analysis Tools (NEW in 1.6.0)
 
 - **Model Analyzer**: Comprehensive model analysis and inspection
   - **Three Depth Levels**: Quick, Standard, or Deep analysis modes
@@ -118,15 +124,10 @@ Note: Not available yet there.
 
 - **VAE Merge**: Blend VAE models with various interpolation methods
 
-### Model Enhancement
+### Model Transformation
 
+- **Model Weight Modifier**: Memory-efficient weight modification with operations like multiply, add, set value, clamp magnitude, and scale max absolute value
 - **Model Enhancer**: Advanced model enhancement capabilities
-  - **Smoothing & Sharpening**: Fine-tune model parameter characteristics
-  - **Quality Boost**: Multi-stage enhancement for improved output
-  - **Adaptive Overbake Prevention**: Prevents excessive modifications
-  - **Precision Control**: FP16/FP32 processing options
-  - **Target Modules**: Enhance specific components (UNet, VAE, Text Encoders)
-  - **Linear & Attention Methods**: Choose enhancement approach
 
 ## Usage
 
@@ -142,7 +143,40 @@ Use the **Main Merge** node to blend two models with various interpolation metho
   - **Frequency**: FFT-based frequency domain blending
   - **Stochastic**: Random pattern-based merging
 
-### Model Analysis Workflow
+### Noise Injection Merging (NEW in 1.7.0)
+Use the **Noise Injection Merge** node to inject controlled noise during merging, helping escape local optima and discover emergent capabilities:
+
+1. **Connect Models**: Connect two MODEL inputs to merge
+2. **Set Base Merge Ratio**: Start with 0.5 for balanced merging
+3. **Choose Noise Pattern**: Select based on your goals:
+   - **Gaussian**: Standard random noise (good general purpose)
+   - **Uniform**: Even distribution (more controlled randomness)
+   - **Structured**: Block patterns (maintains coherence)
+   - **Layer-Scaled**: More noise in deeper layers (progressive exploration)
+   - **Adaptive**: Noise based on similarity (high similarity = more noise)
+   - **Perlin**: Smooth noise (organic variations)
+   - **Gradient**: Directional noise (guided exploration)
+4. **Adjust Noise Strength**: Start low (0.02-0.05) and increase if needed
+5. **Target Layers** (Optional):
+   - Enable `focus_attention` to target attention mechanisms
+   - Enable `focus_mlp` to target feedforward layers
+   - Leave both off to affect all layers
+6. **Fine-tune** (Optional):
+   - `layer_scaling_factor`: How much to increase noise in deeper layers (1.5 default)
+   - `noise_decay`: How quickly noise decreases per layer (0.9 default)
+   - `adaptive_threshold`: Similarity threshold for adaptive mode (0.3 default)
+   - `preserve_norms`: Keep tensor magnitudes stable (recommended: True)
+
+**Best Practices**:
+- Start with **Gaussian** pattern and 0.03-0.05 strength for experimentation
+- Use **Layer-Scaled** when you want deeper layers more affected
+- Use **Adaptive** when models are very similar and need differentiation
+- Use **Structured** for maintaining coherent patterns
+- Enable `focus_attention` for style/content changes
+- Enable `focus_mlp` for feature extraction changes
+- Set seed for reproducible experiments
+
+### Model Analysis Workflow (NEW)
 
 1. **Analyze a Single Model**:
    - Connect model to **Model Analyzer** node
@@ -214,7 +248,7 @@ The **Weighted Tensor Merge [Advanced]** node provides sophisticated control:
 **Example Workflow**:
 ```
 [Model A] ──┐
-            [Analyze Model Weights] → [Recipe] → [Apply Merge Recipe] → [Merged Model]
+           [Analyze Model Weights] → [Recipe] → [Apply Merge Recipe] → [Merged Model]
 [Model B] ──┘                                         ↑
                                                [Model A, Model B]
 ```
@@ -255,15 +289,6 @@ Use **Advanced CLIP Merge** for sophisticated text encoder merging:
 - Enable preserve_norms for stability
 - Use spectral_blend for frequency domain merging
 
-### Model Enhancement
-Use **Model Enhancer** to improve checkpoint quality:
-- Select target modules (UNet, VAE, Text Encoders, or All)
-- Adjust smoothing and sharpening strengths
-- Apply quality boost for multi-stage enhancement
-- Set blend strength to control enhancement intensity
-- Choose precision mode (FP16 for memory efficiency, FP32 for quality)
-- Select enhancement method (Linear for general use, Attention for focused improvements)
-
 ### Prediction Type Conversion
 Use **Epsilon/V-Pred Converter** when working with mixed prediction types:
 - Set input_pred_type (current model type)
@@ -281,21 +306,22 @@ Use **Epsilon/V-Pred Converter** when working with mixed prediction types:
 | Layered Blend | Tensor_Prism/Core | Component-specific blending |
 | SDXL Block Merge | Tensor_Prism/Merge | Granular SDXL block control |
 | SDXL Advanced Block Merge | Tensor_Prism/Merge | GPU-optimized block merging |
-| Weighted Tensor Merge [Advanced] | Tensor_Prism/Mask | Sophisticated tensor merging with blend modes |
-| Analyze Model Weights | Tensor_Prism/Analysis | Intelligent merge optimization |
-| Apply Merge Recipe | Tensor_Prism/Analysis | Recipe-based precision merging |
+| Weighted Tensor Merge [Advanced] | Tensor_Prism/Advanced | Sophisticated tensor merging with blend modes |
+| Analyze Model Weights | Tensor_Prism/Advanced | Intelligent merge optimization |
+| Apply Merge Recipe | Tensor_Prism/Advanced | Recipe-based precision merging |
 | Model Analyzer | Tensor_Prism/Analysis | Comprehensive model analysis |
 | Model Comparator | Tensor_Prism/Analysis | Quick compatibility checker |
 | Intelligent Tensor Selector | Tensor_Prism/Advanced | Smart tensor-by-tensor selection |
 | Competitive Model Selector | Tensor_Prism/Advanced | Multi-model tensor competition |
-| Epsilon/V-Pred Converter | Tensor_Prism/Merge | Pure prediction type conversion |
+| Epsilon/V-Pred Converter | Tensor_Prism/Convert | Pure prediction type conversion |
 | Advanced CLIP Merge | Tensor_Prism/CLIP | Sophisticated CLIP merging with multiple methods |
 | VAE Merge | Tensor_Prism/VAE | VAE blending |
 | Model Mask Generator | Tensor_Prism/Mask | Create structural masks |
 | Weighted Mask Merge | Tensor_Prism/Mask | Apply masks to merging |
 | Model Key Filter | Tensor_Prism/Mask | Filter model parameters |
 | Mask Blender | Tensor_Prism/Mask | Combine multiple masks |
-| Model Enhancer | Tensor_Prism/Transform | Model enhancement and quality improvement |
+| Model Weight Modifier | Tensor_Prism/Transform | Direct weight manipulation |
+| Model Enhancer | Tensor_Prism/Transform | Model enhancement |
 
 ## Memory Management
 
@@ -344,7 +370,12 @@ The TensorPrism pack includes advanced memory management features:
 17. **Recipe Reuse**: Save successful merge recipes as text files for reproducible results
 18. **Deep Analysis Mode**: Use Deep analysis when planning very complex or experimental merges
 19. **Read Recommendations**: The Model Analyzer provides tailored suggestions based on your specific models
-20. **Enhancement Subtlety**: Start with low enhancement values (0.1-0.2) and increase gradually
+20. **Noise Injection for Exploration**: Use Noise Injection Merge when standard merges produce overly similar results or to discover unexpected capabilities
+21. **Start with Low Noise**: Begin with 0.02-0.05 noise strength and increase gradually - too much noise destroys coherence
+22. **Adaptive Noise for Similar Models**: When merging highly similar models, use adaptive noise pattern to force differentiation
+23. **Layer-Scaled for Deep Effects**: Use layer-scaled noise when you want deeper layers to explore more variations
+24. **Preserve Norms**: Keep norm preservation enabled for stability unless specifically experimenting with magnitude changes
+25. **Reproducible Noise Experiments**: Always set a seed for noise injection to reproduce successful merges
 
 ## Troubleshooting
 
@@ -359,7 +390,6 @@ The TensorPrism pack includes advanced memory management features:
 - **Device Conflicts**: v1.5.0+ fixes "expected tensors on same device" errors - update if you see these
 - **Smart Merger Issues**: Ensure both models are compatible architecture and same size
 - **Analysis Failures**: Ensure sufficient system RAM for model analysis (models stay on GPU, analysis on CPU)
-- **Enhancement Artifacts**: Reduce enhancement strengths or enable adaptive overbake prevention
 
 ## Performance Tips
 
@@ -373,7 +403,6 @@ The TensorPrism pack includes advanced memory management features:
 - **Recipe Reuse**: Save and reuse successful merge recipes for consistency
 - **Quick Analysis**: Use Quick mode for routine checks, Deep mode for important merges
 - **Analysis Caching**: Model Analyzer results can guide multiple merge attempts
-- **Enhancement Efficiency**: Use FP16 precision mode when enhancing large models
 
 ## License
 
@@ -386,45 +415,80 @@ Contributions are welcome! Please feel free to submit issues and pull requests.
 ## Changelog
 
 ### Version 1.7.0 (Current)
-- **REORGANIZED**: Consolidated file structure
-  - Combined related nodes into unified files (CoreMerge, SDXLMerge, MaskSystem)
-  - Reduced from 15+ files to 13 core files
-  - Improved maintainability and code organization
-- **VERIFIED**: All node functionality preserved
-- **UPDATED**: Documentation to reflect current architecture
-- **CONFIRMED**: All 20 production nodes fully functional
+- **NEW**: Noise Injection Merge node for emergent capability discovery
+  - 7 noise patterns: Gaussian, Uniform, Structured, Layer-Scaled, Adaptive, Perlin, Gradient
+  - Minimal overhead design (no significant memory or performance impact)
+  - Focus controls for targeting specific layer types (attention, MLP)
+  - Layer-aware scaling with automatic depth-based noise adjustment
+  - Adaptive noise generation based on tensor similarity
+  - Norm preservation for stability
+  - Reproducible experiments with seed control
+- **IMPROVED**: Consolidated file structure for better maintainability
+- **UPDATED**: Enhanced __init__.py with 21 production-ready nodes
+- **ENHANCED**: Comprehensive documentation for all merging strategies
 
 ### Version 1.6.5
 - **FIXED**: Corrected file upload issues from v1.6.0
 - **VERIFIED**: All node files properly included in repository
 - **CONFIRMED**: Model Analyzer and Model Comparator fully functional
+- All features from v1.6.0 should be present
 
 ### Version 1.6.0
 - **NEW**: Model Analyzer node for comprehensive model analysis
+  - Three analysis depths: Quick, Standard, Deep
+  - Architecture analysis (blocks, layers, components)
+  - Statistical analysis (magnitudes, sparsity, distributions)
+  - Memory profiling by component
+  - Model comparison for merge compatibility
+  - Smart recommendations based on model characteristics
+  - JSON export for external processing
 - **NEW**: Model Comparator node for quick compatibility checks
+  - Fast similarity scoring
+  - Boolean compatibility output
+  - Merge recommendations based on similarity
+  - Workflow-friendly outputs
 - **IMPROVED**: Node organization with new Analysis category
+- **REMOVED**: Fine-tuning placeholder nodes (replaced with practical analysis tools)
 - **UPDATED**: Documentation with analysis workflow examples
 - **ENHANCED**: Better merge planning through pre-merge analysis
 
 ### Version 1.5.0
 - **FIXED**: Device conflict errors - all tensor operations now ensure same-device calculations
 - **NEW**: Weighted Tensor Merge [Advanced] node with sophisticated blending modes
+  - 6 blend modes: linear, sigmoid, cosine, exponential, logarithmic, smoothstep
+  - Curve power control for fine-tuned transitions
+  - Layer scaling: uniform, depth-progressive, shallow-bias, deep-bias
+  - Preserve extremes option and noise injection
+  - Smart layer detection and per-layer scaling
 - **NEW**: Analyze Model Weights node for intelligent merge optimization
+  - 5 optimization methods: combined, similarity, variance, gradient magnitude, entropy
+  - Configurable target weights and standard deviations
+  - Weight smoothing and auto-detection features
+  - Memory-efficient CPU-based analysis
 - **NEW**: Apply Merge Recipe node for recipe-based merging
+  - Multiple merge methods: weighted sum, add difference
+  - Strength control for recipe application
+  - Block-level precision merging
 - **IMPROVED**: Enhanced device safety across all nodes
 - **IMPROVED**: Better memory management in analysis nodes
+- **IMPROVED**: Separated basic and advanced tensor merge nodes for clarity
+- **REMOVED**: Checkpoint Reroute + Notes node (redundant functionality moved to Arctenox's Essentials and Updated)
 
 ### Version 1.2.0
-- **NEW**: Advanced CLIP Merge node with multiple interpolation methods
-- **NEW**: Epsilon/V-Pred Converter node for pure prediction type conversion
-- **ENHANCED**: SDXL Advanced Block Merge with improved memory management
-- **IMPROVED**: Weighted Mask Merge with tensor-level precision control
+- Added **Advanced CLIP Merge** node with multiple interpolation methods and layer-specific controls
+- Added **Epsilon/V-Pred Converter** node for pure prediction type conversion
+- Enhanced **SDXL Advanced Block Merge** with improved memory management and context managers
+- Improved **Weighted Mask Merge** with tensor-level precision control
+- Added spectral blending capabilities to CLIP merging
+- Enhanced memory management with automatic GPU/CPU fallback
+- Improved layer identification and targeting for prediction type conversion
+- Better mathematical accuracy in conversion factors
 
 ### Version 1.1.0
 - GPU-optimized memory management
 - Cross-platform compatibility (CUDA/MPS/CPU)
-- Various bug fixes
-- Addition of core nodes
+- Bunch of Bug Fixes
+- Addition of 3 Nodes
 
 ### Version 1.0.0
 - Initial release
@@ -432,6 +496,7 @@ Contributions are welcome! Please feel free to submit issues and pull requests.
 - Advanced mask system with filtering and blending
 - Spectral analysis and frequency-domain merging
 - Support for SDXL models with granular block control
+- Model weight modification tools
 
 ## Credits
 
