@@ -20,6 +20,11 @@ Advanced model merging and enhancement nodes for ComfyUI, providing sophisticate
 cd ComfyUI/custom_nodes/
 git clone https://github.com/Arctenox/Tensor_Prism.git
 ```
+or
+```bash
+cd ComfyUI/custom_nodes/
+git clone https://github.com/Arctenox/Tensor_Prism
+```
 
 ### Method 2: ComfyUI Manager
 Note: Not available yet there.
@@ -28,10 +33,7 @@ Note: Not available yet there.
 3. Click Install
 
 ### Method 3: Manual Installation
-1. Clone or download the repository
-   ``bash
-git clone https://github.com/Arctenox/Tensor_Prism
-``
+1. Download the repository
 3. Place the entire folder in your `ComfyUI/custom_nodes/` directory
 4. Restart ComfyUI
 
