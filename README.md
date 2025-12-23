@@ -18,6 +18,7 @@ Advanced model merging and enhancement nodes for ComfyUI, providing sophisticate
 - **Discord**: https://discord.gg/UVXPdkgedh
 - **GitHub**: [@Arctenox](https://github.com/Arctenox)
 - **Issues**: [GitHub Issues](https://github.com/Arctenox/Arctenoxs-Essentials_ComfyUI/issues)
+- **CivitAI**: https://civitai.com/user/Arctenox
 ---
 ## Installation
 
