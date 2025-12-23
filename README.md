@@ -1,7 +1,7 @@
 # Tensor Prism - ComfyUI Node Pack
 
 ## Developer Notes
-IMPORTANT: You might have to do a regular ModelMergeSDXL for the block layer merging, since I don't know if it works or not for V1.6.5+.
+IMPORTANT: You might have to do a regular ModelMergeSDXL for the block layer merging, since I don't know if it works or not for V1.6.5+ Previous versions before 1.6.0 were deleted due to me realizing some of them were just copy-paste because I was tired but the current is what the node pack is supposed to be I made sure of it.
 
 My First ComfyUI Node Pack, sort of vibe-coded with Gemini 2.5 Flash and Claude 4. Feel free to publish the models you make and link them to me I'd like to be able to see the models, and see what they're about to see if I need to add more nodes or if the nodes are good and make really good quality checkpoint models. This is also a node pack for those familiar with merging models.
 
