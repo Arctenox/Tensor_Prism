@@ -12,7 +12,7 @@ Advanced model merging and enhancement nodes for ComfyUI, providing sophisticate
 **Author**: Arctenox  
 **Version**: 1.7.0  
 **License**: GPL-3.0
----
+
 ## 📧 Contact & Support
 
 - **Discord**: https://discord.gg/UVXPdkgedh
