@@ -500,7 +500,7 @@ Contributions are welcome! Please feel free to submit issues and pull requests.
 
 ## Credits
 
-Developed by Arctenox with assistance from Gemini 2.5 Flash and Claude 4.
+Developed by Arctenox with heavy assistance from Gemini 2.5 Flash and Claude 4 meaning this was mostly Vibe Coded.
 
 ## Support
 
