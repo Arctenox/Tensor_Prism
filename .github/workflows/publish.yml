@@ -3,8 +3,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - main
-      - master
+      - 1.6.5
     paths:
       - "pyproject.toml"
 
