@@ -7,7 +7,7 @@ techniques for blending, enhancing, and manipulating Stable Diffusion models wit
 GPU-optimized memory management.
 
 Author: Arctenox
-Version: 1.7.0
+Version: 1.7.1
 License: GPL-3.0
 Repository: https://github.com/Arctenox/Tensor_Prism
 
