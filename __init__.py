@@ -379,7 +379,7 @@ def print_welcome_message():
     
     print("="*70)
     print("✅ TensorPrism initialized successfully!")
-    print("📝 v1.7.0: Advanced CLIP Merge with CLIP-L/G control")
+    print("📝 v1.7.1: Fixed Advanced CLIP Merge with CLIP-L/G control")
     print("   • 3 files contain 10 core nodes (CoreMerge, SDXLMerge, MaskSystem)")
     print("   • 11 additional standalone feature nodes")
     print("   • Total: 21 production-ready nodes")
