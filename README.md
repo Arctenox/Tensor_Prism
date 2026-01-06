@@ -423,6 +423,7 @@ Contributions are welcome! Please feel free to submit issues and pull requests.
 
 ### Version 1.7.1
 - Fixed the Advanced Clip Merge and Model Enhancer Node.
+- Fixed Mask Blender
 
 ### Version 1.7.0
 - **NEW**: Noise Injection Merge node for emergent capability discovery
