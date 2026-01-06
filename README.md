@@ -421,7 +421,10 @@ Contributions are welcome! Please feel free to submit issues and pull requests.
 
 ## Changelog
 
-### Version 1.7.0 (Current)
+### Version 1.7.1
+- Fixed the Advanced Clip Merge and Model Enhancer Node.
+
+### Version 1.7.0
 - **NEW**: Noise Injection Merge node for emergent capability discovery
   - 7 noise patterns: Gaussian, Uniform, Structured, Layer-Scaled, Adaptive, Perlin, Gradient
   - Minimal overhead design (no significant memory or performance impact)
