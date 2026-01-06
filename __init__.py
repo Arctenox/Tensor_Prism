@@ -128,7 +128,7 @@ except ImportError:
     TensorPrism_NoiseInjectionMerge = None
 
 # Version info
-__version__ = "1.7.0"
+__version__ = "1.7.1"
 __author__ = "Arctenox"
 __description__ = "Advanced model merging and enhancement nodes for ComfyUI"
 
@@ -379,7 +379,7 @@ def print_welcome_message():
     
     print("="*70)
     print("✅ TensorPrism initialized successfully!")
-    print("📝 v1.7.1: Fixed Advanced CLIP Merge with CLIP-L/G control")
+    print("📝 v1.7.1: Fixed Advanced CLIP Merge with proper CLIP-L/G encoder control")
     print("   • 3 files contain 10 core nodes (CoreMerge, SDXLMerge, MaskSystem)")
     print("   • 11 additional standalone feature nodes")
     print("   • Total: 21 production-ready nodes")
