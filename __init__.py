@@ -9,7 +9,7 @@ GPU-optimized memory management.
 Author: Arctenox
 Version: 1.7.0
 License: GPL-3.0
-Repository: https://github.com/NoxTheCubeman/ComfyUI-Tensor-Prism-Node-Pack
+Repository: https://github.com/Arctenox/Tensor_Prism
 
 Features:
 - Advanced model merging with multiple interpolation methods
@@ -105,9 +105,9 @@ except ImportError:
 
 # ==================== CLIP MERGING NODES ====================
 try:
-    from .TensorPrism_AdvancedClipMerge import SDXLAdvancedBlockMergeTensorPrism as AdvancedCLIPMerge
+    from .TensorPrism_AdvancedClipMerge import TensorPrismAdvancedClipMerge
 except ImportError:
-    AdvancedCLIPMerge = None
+    TensorPrismAdvancedClipMerge = None
 
 # ==================== VAE MERGING NODES ====================
 try:
@@ -181,9 +181,11 @@ if TensorPrism_AnalyzeModelWeights:
 if TensorPrism_ApplyMergeRecipe:
     NODE_CLASS_MAPPINGS["TensorPrism_ApplyMergeRecipe"] = TensorPrism_ApplyMergeRecipe
 
-# CLIP and VAE merging nodes (2 nodes)
-if AdvancedCLIPMerge:
-    NODE_CLASS_MAPPINGS["AdvancedCLIPMerge"] = AdvancedCLIPMerge
+# CLIP merging nodes (1 node)
+if TensorPrismAdvancedClipMerge:
+    NODE_CLASS_MAPPINGS["TensorPrismAdvancedClipMerge"] = TensorPrismAdvancedClipMerge
+
+# VAE merging nodes (1 node)
 if TensorPrismVAEMerge:
     NODE_CLASS_MAPPINGS["TensorPrismVAEMerge"] = TensorPrismVAEMerge
 
@@ -226,8 +228,10 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "TensorPrism_AnalyzeModelWeights": "Analyze Model Weights (Tensor Prism)",
     "TensorPrism_ApplyMergeRecipe": "Apply Merge Recipe (Tensor Prism)",
     
-    # CLIP and VAE merging
-    "AdvancedCLIPMerge": "Advanced CLIP Merge (Tensor Prism)",
+    # CLIP merging
+    "TensorPrismAdvancedClipMerge": "Advanced CLIP Merge (Tensor Prism)",
+    
+    # VAE merging
     "TensorPrismVAEMerge": "VAE Merge (Tensor Prism)",
     
     # Conversion nodes
@@ -268,8 +272,10 @@ NODE_CATEGORIES = {
     "TensorPrism_AnalyzeModelWeights": "Tensor_Prism/Analysis",
     "TensorPrism_ApplyMergeRecipe": "Tensor_Prism/Analysis",
     
-    # CLIP and VAE merging
-    "AdvancedCLIPMerge": "Tensor_Prism/CLIP",
+    # CLIP merging
+    "TensorPrismAdvancedClipMerge": "Tensor_Prism/CLIP",
+    
+    # VAE merging
     "TensorPrismVAEMerge": "Tensor_Prism/VAE",
     
     # Conversion nodes
@@ -373,7 +379,7 @@ def print_welcome_message():
     
     print("="*70)
     print("✅ TensorPrism initialized successfully!")
-    print("📝 v1.7.0: Added Noise Injection Merge for emergent capability discovery")
+    print("📝 v1.7.0: Advanced CLIP Merge with CLIP-L/G control")
     print("   • 3 files contain 10 core nodes (CoreMerge, SDXLMerge, MaskSystem)")
     print("   • 11 additional standalone feature nodes")
     print("   • Total: 21 production-ready nodes")
