@@ -484,133 +484,133 @@ class TensorPrism_ModelMaskBlender:
     FUNCTION = "blend_masks"
     CATEGORY = "Tensor_Prism/Mask"
 
-def blend_masks(self, mask_A, mask_B, blend_mode, memory_limit_gb=2.0,
-                   blend_strength=0.5, clip_output=True):
+    def blend_masks(self, mask_A, mask_B, blend_mode, memory_limit_gb=2.0,
+                           blend_strength=0.5, clip_output=True):
         
-        print(f"\n--- Mask Blender ---")
-        print(f"  Mode: {blend_mode}, Strength: {blend_strength}")
+            print(f"\n--- Mask Blender ---")
+            print(f"  Mode: {blend_mode}, Strength: {blend_strength}")
         
-        # ===== CHECK MASK TYPE FIRST (BEFORE ANY NUMPY CONVERSION) =====
-        is_dict_mask_A = isinstance(mask_A, dict) and "mask_dict" in mask_A
-        is_dict_mask_B = isinstance(mask_B, dict) and "mask_dict" in mask_B
+            # ===== CHECK MASK TYPE FIRST (BEFORE ANY NUMPY CONVERSION) =====
+            is_dict_mask_A = isinstance(mask_A, dict) and "mask_dict" in mask_A
+            is_dict_mask_B = isinstance(mask_B, dict) and "mask_dict" in mask_B
         
-        # ===== HANDLE DICTIONARY MASKS (MODEL WEIGHTS) =====
-        if is_dict_mask_A and is_dict_mask_B:
-            print("  Processing dictionary masks (model weights)")
+            # ===== HANDLE DICTIONARY MASKS (MODEL WEIGHTS) =====
+            if is_dict_mask_A and is_dict_mask_B:
+                print("  Processing dictionary masks (model weights)")
             
-            mask_dict_A = mask_A["mask_dict"]
-            mask_dict_B = mask_B["mask_dict"]
+                mask_dict_A = mask_A["mask_dict"]
+                mask_dict_B = mask_B["mask_dict"]
             
-            # Get all keys from both masks
-            all_keys = set(mask_dict_A.keys()) | set(mask_dict_B.keys())
-            print(f"  Total keys: {len(all_keys)}")
+                # Get all keys from both masks
+                all_keys = set(mask_dict_A.keys()) | set(mask_dict_B.keys())
+                print(f"  Total keys: {len(all_keys)}")
             
-            # Create combined mask dictionary
-            combined_mask_dict = {}
+                # Create combined mask dictionary
+                combined_mask_dict = {}
             
-            for key in all_keys:
-                # Get values, default to 0.0 if key doesn't exist in one mask
-                value_A = mask_dict_A.get(key, 0.0)
-                value_B = mask_dict_B.get(key, 0.0)
+                for key in all_keys:
+                    # Get values, default to 0.0 if key doesn't exist in one mask
+                    value_A = mask_dict_A.get(key, 0.0)
+                    value_B = mask_dict_B.get(key, 0.0)
                 
-                # Blend based on mode
+                    # Blend based on mode
+                    if blend_mode == "Add":
+                        combined_value = value_A + value_B
+                    elif blend_mode == "Multiply":
+                        combined_value = value_A * value_B
+                    elif blend_mode == "Max":
+                        combined_value = max(value_A, value_B)
+                    elif blend_mode == "Min":
+                        combined_value = min(value_A, value_B)
+                    elif blend_mode == "Linear Blend":
+                        combined_value = value_A * (1.0 - blend_strength) + value_B * blend_strength
+                    elif blend_mode == "Exponential Blend":
+                        exp_strength = blend_strength ** 2
+                        combined_value = value_A * (1.0 - exp_strength) + value_B * exp_strength
+                    else:
+                        combined_value = value_A
+                
+                    # Clip if requested
+                    if clip_output:
+                        combined_value = max(0.0, min(1.0, combined_value))
+                
+                    combined_mask_dict[key] = combined_value
+            
+                # Calculate average intensity
+                avg_intensity = float(np.mean(list(combined_mask_dict.values()))) if combined_mask_dict else 0.0
+            
+                # Create combined mask object with same structure as Model Mask Generator output
+                combined_mask = {
+                    "mask_dict": combined_mask_dict,
+                    "mask_type": f"blended_{blend_mode}",
+                    "intensity": avg_intensity,
+                    "layer_info": mask_A.get("layer_info", {"layer_names": list(all_keys), "total_layers": 0, "layers": {}})
+                }
+            
+                print(f"  Combined intensity: {avg_intensity:.4f}")
+                print(f"--- Blender completed (dictionary mode) ---\n")
+            
+                return (combined_mask,)
+        
+            # ===== HANDLE IMAGE/TENSOR MASKS (ORIGINAL CODE) =====
+            else:
+                print("  Processing image/tensor masks")
+            
+                # Error if trying to mix types
+                if is_dict_mask_A or is_dict_mask_B:
+                    raise TypeError("Cannot blend dictionary mask with image mask. Both masks must be the same type.")
+            
+                # Convert to numpy
+                if isinstance(mask_A, torch.Tensor):
+                    mask_A_np = mask_A.cpu().numpy()
+                else:
+                    mask_A_np = np.array(mask_A)
+                
+                if isinstance(mask_B, torch.Tensor):
+                    mask_B_np = mask_B.cpu().numpy()
+                else:
+                    mask_B_np = np.array(mask_B)
+
+                # Resize if needed
+                if mask_A_np.shape != mask_B_np.shape:
+                    from scipy import ndimage
+                    if len(mask_A_np.shape) == 3:
+                        mask_B_np = ndimage.zoom(mask_B_np,
+                            (mask_A_np.shape[0]/mask_B_np.shape[0],
+                             mask_A_np.shape[1]/mask_B_np.shape[1],
+                             mask_A_np.shape[2]/mask_B_np.shape[2]))
+                    elif len(mask_A_np.shape) == 2:
+                        mask_B_np = ndimage.zoom(mask_B_np,
+                            (mask_A_np.shape[0]/mask_B_np.shape[0],
+                             mask_A_np.shape[1]/mask_B_np.shape[1]))
+
+                # Blend
                 if blend_mode == "Add":
-                    combined_value = value_A + value_B
+                    result_mask = mask_A_np + mask_B_np
                 elif blend_mode == "Multiply":
-                    combined_value = value_A * value_B
+                    result_mask = mask_A_np * mask_B_np
                 elif blend_mode == "Max":
-                    combined_value = max(value_A, value_B)
+                    result_mask = np.maximum(mask_A_np, mask_B_np)
                 elif blend_mode == "Min":
-                    combined_value = min(value_A, value_B)
+                    result_mask = np.minimum(mask_A_np, mask_B_np)
                 elif blend_mode == "Linear Blend":
-                    combined_value = value_A * (1.0 - blend_strength) + value_B * blend_strength
+                    result_mask = mask_A_np * (1.0 - blend_strength) + mask_B_np * blend_strength
                 elif blend_mode == "Exponential Blend":
                     exp_strength = blend_strength ** 2
-                    combined_value = value_A * (1.0 - exp_strength) + value_B * exp_strength
+                    result_mask = mask_A_np * (1.0 - exp_strength) + mask_B_np * exp_strength
                 else:
-                    combined_value = value_A
-                
-                # Clip if requested
+                    result_mask = mask_A_np
+            
                 if clip_output:
-                    combined_value = max(0.0, min(1.0, combined_value))
-                
-                combined_mask_dict[key] = combined_value
-            
-            # Calculate average intensity
-            avg_intensity = float(np.mean(list(combined_mask_dict.values()))) if combined_mask_dict else 0.0
-            
-            # Create combined mask object with same structure as Model Mask Generator output
-            combined_mask = {
-                "mask_dict": combined_mask_dict,
-                "mask_type": f"blended_{blend_mode}",
-                "intensity": avg_intensity,
-                "layer_info": mask_A.get("layer_info", {"layer_names": list(all_keys), "total_layers": 0, "layers": {}})
-            }
-            
-            print(f"  Combined intensity: {avg_intensity:.4f}")
-            print(f"--- Blender completed (dictionary mode) ---\n")
-            
-            return (combined_mask,)
-        
-        # ===== HANDLE IMAGE/TENSOR MASKS (ORIGINAL CODE) =====
-        else:
-            print("  Processing image/tensor masks")
-            
-            # Error if trying to mix types
-            if is_dict_mask_A or is_dict_mask_B:
-                raise TypeError("Cannot blend dictionary mask with image mask. Both masks must be the same type.")
-            
-            # Convert to numpy
-            if isinstance(mask_A, torch.Tensor):
-                mask_A_np = mask_A.cpu().numpy()
-            else:
-                mask_A_np = np.array(mask_A)
-                
-            if isinstance(mask_B, torch.Tensor):
-                mask_B_np = mask_B.cpu().numpy()
-            else:
-                mask_B_np = np.array(mask_B)
+                    result_mask = np.clip(result_mask, 0.0, 1.0)
 
-            # Resize if needed
-            if mask_A_np.shape != mask_B_np.shape:
-                from scipy import ndimage
-                if len(mask_A_np.shape) == 3:
-                    mask_B_np = ndimage.zoom(mask_B_np,
-                        (mask_A_np.shape[0]/mask_B_np.shape[0],
-                         mask_A_np.shape[1]/mask_B_np.shape[1],
-                         mask_A_np.shape[2]/mask_B_np.shape[2]))
-                elif len(mask_A_np.shape) == 2:
-                    mask_B_np = ndimage.zoom(mask_B_np,
-                        (mask_A_np.shape[0]/mask_B_np.shape[0],
-                         mask_A_np.shape[1]/mask_B_np.shape[1]))
+                result_tensor = torch.from_numpy(result_mask).float()
+                gc.collect()
 
-            # Blend
-            if blend_mode == "Add":
-                result_mask = mask_A_np + mask_B_np
-            elif blend_mode == "Multiply":
-                result_mask = mask_A_np * mask_B_np
-            elif blend_mode == "Max":
-                result_mask = np.maximum(mask_A_np, mask_B_np)
-            elif blend_mode == "Min":
-                result_mask = np.minimum(mask_A_np, mask_B_np)
-            elif blend_mode == "Linear Blend":
-                result_mask = mask_A_np * (1.0 - blend_strength) + mask_B_np * blend_strength
-            elif blend_mode == "Exponential Blend":
-                exp_strength = blend_strength ** 2
-                result_mask = mask_A_np * (1.0 - exp_strength) + mask_B_np * exp_strength
-            else:
-                result_mask = mask_A_np
+                print(f"  Result shape: {result_tensor.shape}")
+                print(f"--- Blender completed (image mode) ---\n")
             
-            if clip_output:
-                result_mask = np.clip(result_mask, 0.0, 1.0)
-
-            result_tensor = torch.from_numpy(result_mask).float()
-            gc.collect()
-
-            print(f"  Result shape: {result_tensor.shape}")
-            print(f"--- Blender completed (image mode) ---\n")
-            
-            return (result_tensor,)
+                return (result_tensor,)
 
 # ==================== WEIGHTED MASK MERGE ====================
 
